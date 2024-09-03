@@ -1,0 +1,47 @@
+version: "3"
+
+services:
+  cassandra_node1: #172.19.0.4
+    image: cassandra:3.0
+    ports:
+      - "7000:7000"
+      - "7001:7001"
+      - "9042:9042"
+      - "7199:7199"
+    environment:
+      - CASSANDRA_SEEDS=cassandra_node1,cassandra_node2,cassandra_node3
+    networks:
+      - cassandra_network
+
+  cassandra_node2:
+    image: cassandra:3.0
+    ports:
+      - "7002:7000"
+      - "7003:7001"
+      - "9043:9042"
+      - "7200:7199"
+    environment:
+      - CASSANDRA_SEEDS=cassandra_node1,cassandra_node2,cassandra_node3
+    networks:
+      - cassandra_network
+
+  cassandra_node3:
+    image: cassandra:3.0
+    ports:
+      - "7004:7000"
+      - "7005:7001"
+      - "9044:9042"
+      - "7201:7199"
+    environment:
+      - CASSANDRA_SEEDS=cassandra_node1,cassandra_node2,cassandra_node3
+    networks:
+      - cassandra_network
+  
+  os:
+    image: ubuntu:latest
+    tty: true
+    stdin_open: true
+
+networks:
+  cassandra_network:
+    driver: bridge

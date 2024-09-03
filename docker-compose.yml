@@ -1,0 +1,69 @@
+services:
+  cassandra_node1:
+    build:
+      context: os
+    tty: true
+    stdin_open: true
+    ports:
+      - "7000:7000"
+      - "7001:7001"
+      - "9042:9042"
+      - "7199:7199"
+    volumes:
+      - ./node1.yaml:/opt/cassandra/conf/cassandra.yaml
+    networks:
+      cassandra_network:
+        ipv4_address: 172.19.0.4
+
+  cassandra_node2:
+    build:
+      context: os
+    tty: true
+    stdin_open: true
+    ports:
+      - "7002:7000"
+      - "7003:7001"
+      - "9043:9042"
+      - "7200:7199"
+    volumes:
+      - ./node2.yaml:/opt/cassandra/conf/cassandra.yaml
+    networks:
+      cassandra_network:
+        ipv4_address: 172.19.0.3
+
+  cassandra_node3:
+    build:
+      context: os
+    tty: true
+    stdin_open: true
+    ports:
+      - "7004:7000"
+      - "7005:7001"
+      - "9044:9042"
+      - "7201:7199"
+    volumes:
+      - ./node3.yaml:/opt/cassandra/conf/cassandra.yaml
+    networks:
+      cassandra_network:
+        ipv4_address: 172.19.0.2
+  
+  os:
+    image: ubuntu:latest
+    tty: true
+    stdin_open: true
+    ports:
+      - "7006:7000"
+      - "7007:7001"
+      - "9045:9042"
+      - "7202:7199"
+    networks:
+      cassandra_network:
+        ipv4_address: 172.19.0.5
+    
+
+networks:
+  cassandra_network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.19.0.0/16
